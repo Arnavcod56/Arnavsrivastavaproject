@@ -5,9 +5,9 @@ class SensorDataPreprocessor:
     """
     
     def __init__(self, window_size=128, overlap=0.5, sampling_rate=50):
-        self.window_size = window_size  # Number of samples per window
-        self.overlap = overlap  # Overlap between consecutive windows
-        self.sampling_rate = sampling_rate  # Hz
+        self.window_size = window_size  
+        self.overlap = overlap  
+        self.sampling_rate = sampling_rate  
         self.scaler = StandardScaler()
         
     def butter_lowpass_filter(self, data, cutoff=20, order=4):
@@ -50,7 +50,6 @@ class SensorDataPreprocessor:
             end_idx = start_idx + self.window_size
             
             window = data[start_idx:end_idx]
-            # Take majority label in window
             window_label = np.bincount(labels[start_idx:end_idx]).argmax()
             
             windowed_data.append(window)
@@ -62,13 +61,11 @@ class SensorDataPreprocessor:
         """
         Complete preprocessing pipeline.
         """
-        # Apply low-pass filter
+    
         filtered_data = self.butter_lowpass_filter(data)
         
-        # Normalize data
         normalized_data = self.normalize_data(filtered_data)
         
-        # Create windows
         windowed_data, window_labels = self.create_sliding_windows(
             normalized_data, labels
         )
